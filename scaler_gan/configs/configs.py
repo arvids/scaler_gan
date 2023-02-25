@@ -92,6 +92,9 @@ class Config:
         self.parser.add_argument('--reconsturct_plot_freq', type=int, default=5, help='save reconstruct and origin mel picture each # epochs')
         self.parser.add_argument('--G_pred_freq_plot', type=int, default=5, help='save G pred and origin mel picture each # epochs')
         self.parser.add_argument('--wandb', action='store_true',  help='monitor data to weights & biases site')
+        self.parser.add_argument('--wandb_entity', type=str, default='eyalcohen', help='user for weights & biases site')
+        self.parser.add_argument('--wandb_project', type=str, default='scalerGAN', help='project for weights & biases site')
+
 
         # epochs
         self.parser.add_argument('--num_epochs', type=int, default=500, help='max # of epochs')

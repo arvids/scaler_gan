@@ -194,7 +194,7 @@ def main():
     conf = Config().parse(inference_mode=True)
     project_name = os.path.basename(conf.output_dir)
     wandb.init(
-        project="ScalerGAN", entity="ScalerGAN", name=project_name, config=vars(conf)
+        project=conf.wandb_project, entity=conf.wandb_entity, name=project_name, config=vars(conf)
     )
 
     gan = ScalerGANTrainer(conf, inference=True)
