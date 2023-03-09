@@ -81,21 +81,15 @@ def random_size(
     :param max_transform_magnitude: max transform magnitude factor
     :return: Tuple with new size tuple and random affine
     """
-    cur_max_scale = (
-        1.0 + (max_scale - 1.0) * np.clip(1.0 * i / epoch_for_max_range, 0, 1)
-        if curriculum
-        else max_scale
-    )
-    cur_min_scale = (
-        1.0 + (min_scale - 1.0) * np.clip(1.0 * i / epoch_for_max_range, 0, 1)
-        if curriculum
-        else min_scale
-    )
     cur_max_transform_magnitude = (
         max_transform_magnitude * np.clip(1.0 * i / epoch_for_max_range, 0, 1)
         if curriculum
         else max_transform_magnitude
     )
+
+    p = np.clip(1.0 * i / epoch_for_max_range, 0.1, 0.9)
+    rng = np.random.default_rng()
+    scale = rng.choice([max_scale, min_scale], p=[p, 1.0-p])
 
     # set random transformation magnitude. scalar = affine, pair = homography.
     random_affine = (
@@ -105,8 +99,7 @@ def random_size(
 
     # set new size for the output image
     new_size = np.array(orig_size) * [
-        1,
-        cur_min_scale + (cur_max_scale - cur_min_scale) * random(),
+        1, scale
     ]
 
     return (
